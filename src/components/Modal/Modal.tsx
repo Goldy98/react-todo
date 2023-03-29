@@ -1,31 +1,32 @@
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren } from "react";
 import CancelIcon from "../../icons/CancelIcon";
 import "./Modal.css";
 
-type Props = { title: string, show: boolean, onClose: () => void };
-
-function Modal(props: PropsWithChildren<Props>) {
-  const [isOpen, setIsOpen] = useState(props.show);
-
-  console.log('isOpen:', isOpen);
-
-  useEffect(() => {
-    setIsOpen(props.show);
-  }, [props.show]);
-
-  return (
-    <>
-      {isOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <h1 className="font-bold pb-2">{props.title}</h1>
-            <span className="modal-close-button" onClick={(e) => props.onClose()}><CancelIcon /></span>
-            {props.children}
-          </div>
-        </div>
-      )}
-    </>
-  );
+interface ModalProps {
+	title: string;
+	show: boolean;
+	onClose: () => void;
 }
 
-export default Modal;
+export default function Modal({
+	onClose,
+	show,
+	title,
+	children,
+}: PropsWithChildren<ModalProps>) {
+	return (
+		<>
+			{show && (
+				<div className="modal">
+					<div className="modal-content">
+						<h1 className="font-bold pb-2">{title}</h1>
+						<button className="modal-close-button" onClick={onClose}>
+							<CancelIcon />
+						</button>
+						{children}
+					</div>
+				</div>
+			)}
+		</>
+	);
+}
